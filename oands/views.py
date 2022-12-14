@@ -38,19 +38,17 @@ import sys
 @api_view(['GET', 'POST'])
 def index(request):
     if request.method == 'POST':
-        return index2(request)
+        return ocr_summarize(request)
 
 
-def index2(request):
+def ocr_summarize(request):
     text = ""
-    message = ""
-    eng_to_kor = ""
-    request_msg = ""
-    error = ""
+    error_message = ""
+    request_img = ""
+    # eng_to_kor=""
     try:
-        request_msg = request.data['image']
-        text = img_open(str(request_msg))
-
+        request_img = request.data['image']
+        text = img_open(str(request_img))
 
         # text = pytesseract.image_to_string(img, lang='kor+eng')
         # text = text.encode("ascii", "ignore")
@@ -78,42 +76,59 @@ def index2(request):
         #     else:
         #         eng_to_kor = "error code: "+rescode
 
-    except Exception as e:
-        message = 'please check file contains text'
-        error = str(e)
+    except:
+        error_message = 'please check file contains text'
+
+    # summarize text
+    summarized_text=Summerization(text)
 
     context = {
         'text': text,
-        'message': message,
-        # 'eng_to_kor': eng_to_kor,
-        'request_msg': request_msg,
-        'error' : error
-        #'img_requested': str(img)
+        'error_message': error_message,
+        'request_img': request_img,
+        'summarized_text': summarized_text
     }
-    # get(context)
     # return render(request, 'formpage.html', context)
     return JsonResponse(context)
 
-
-# def get(context):
-#     return JsonResponse(context)
-
 def img_open(imgUrl):
-    # request.urlopen()
     res = ur.urlopen(imgUrl).read()
     # Image open
     f=io.BytesIO(res)
     img=Image.open(f)
-    # img = Image.open(BytesIO(res))
-    #img = Image.open(img)
-    # img=Image.open(urlopen(imgUrl))
     text = pytesseract.image_to_string(img, lang='kor+eng')
-    # text = text.encode("ascii", "ignore")
-    # text = text.decode()
     return text
-    # urlretrieve(imgUrl, 'ex.png')
-    # img=PIL.Image.open('ex.png')
-    # text = pytesseract.image_to_string(img, lang='kor+eng')
-    # return str(text)
 
+
+# summarize text
+# 한국어 추출 요약
+
+from typing import List
+from konlpy.tag import Okt
+from typing import List
+from lexrankr import LexRank
+import json
+
+class OktTokenizer:
+    okt: Okt = Okt()
+    def __call__(self, text: str) -> List[str]:
+        tokens: List[str] = self.okt.pos(text, norm=True, stem=True, join=True)
+        return tokens
+def Summerization(text):
+    # 1. init using Okt tokenizer
+    mytokenizer: OktTokenizer = OktTokenizer()
+    lexrank: LexRank = LexRank(mytokenizer)
+    # text = ""
+
+    # 2. summarize (like, pre-computation)
+    lexrank.summarize(text)
+
+    summerization = []
+
+    # 3. probe (like, query-time)
+    summaries: List[str] = lexrank.probe()
+    for summary in summaries:
+        summerization.append(summary)
+
+    return summerization
 

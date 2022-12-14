@@ -17,5 +17,7 @@ django-cloudinary-storage==0.3.0
 #psycopg2==2.6.2
 cloudinary~=1.30.0
 djangorestframework~=3.14.0
-
 firebase_admin==6.0.1
+
+konlpy==0.6.0
+lexrankr==1.0
