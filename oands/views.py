@@ -103,7 +103,6 @@ def img_open(imgUrl):
 # summarize text
 # 한국어 추출 요약
 
-from typing import List
 from konlpy.tag import Okt
 from typing import List
 from lexrankr import LexRank

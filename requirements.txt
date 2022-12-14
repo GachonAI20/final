@@ -21,3 +21,4 @@ firebase_admin==6.0.1
 
 konlpy==0.6.0
 lexrankr==1.0
+typing==3.7.4.3
