@@ -1,2 +1,1 @@
-A webapp that helps to extract text from images and summarize the text.
-checkout here: https://emmamichael.pythonanywhere.com
+The ocr django project referred to this link: https://github.com/emmakodes/ocrandsummarize
