@@ -23,5 +23,3 @@ scikit-learn==1.1.2
 numpy==1.23.5
 konlpy==0.6.0
 lexrankr==1.0
-typing==3.7.4.3
-Jpype1==1.4.1
