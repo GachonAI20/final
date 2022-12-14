@@ -48,6 +48,7 @@ def ocr_summarize(request):
     # eng_to_kor=""
     try:
         request_img = request.data['image']
+        request_img=request_img.replace("\/","/")
         text = img_open(str(request_img))
 
         # text = pytesseract.image_to_string(img, lang='kor+eng')
@@ -106,7 +107,6 @@ def img_open(imgUrl):
 from konlpy.tag import Okt
 from typing import List
 from lexrankr import LexRank
-import json
 
 class OktTokenizer:
     okt: Okt = Okt()
