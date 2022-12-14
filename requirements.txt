@@ -24,4 +24,4 @@ numpy==1.23.5
 konlpy==0.6.0
 lexrankr==1.0
 typing==3.7.4.3
-jpype1==0.7.0
+# jpype1==0.7.0
