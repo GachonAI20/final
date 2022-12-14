@@ -3,3 +3,5 @@ tesseract-ocr-eng
 tesseract-ocr-kor
 tesseract-ocr-deu
 libarchive13
+Cython
+konlpy
